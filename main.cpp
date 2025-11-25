@@ -113,8 +113,35 @@ void printPath(pair<int,int> exitcell,
     }
 }
 
-bool dfs(int ent_r, int ent_c, vector<vector<int>> maze, vector<vector<bool>> visited, vector<vector<int>> parent_r, vector<vector<int>> parent_c, int exit_r, int exit_c)
+bool dfs(int ent_r, int ent_c, const vector<vector<int>>& maze, vector<vector<bool>>& visited, vector<vector<int>>& parent_r, vector<vector<int>>& parent_c, int exit_r, int exit_c)
 {
+    // base case, if current cell is the exit, stop and return true
+    if(ent_r == exit_r && ent_c == exit_c)
+    {
+        return true;
+    }
+
+    // mark current cell as visited
+    visited[ent_r][ent_c] = true;
+
+    // establish cardinal directions from current cell
+    pair<int, int> up(ent_r + dr[0], ent_c + dc[0]);
+    pair<int, int> right(ent_r + dr[1], ent_c + dc[1]);
+    pair<int, int> down(ent_r + dr[2], ent_c + dc[2]);
+    pair<int, int> left(ent_r + dr[3], ent_c + dc[3]);
+
+    // if up cell can be visited
+    if(up.first > -1 && maze[up.first][up.second] != '1' && !visited[up.first][up.second])
+    {
+        // save current cell as parent of up cell
+        parent_r[up.first][up.second] = ent_r;
+        parent_c[up.first][up.second] = ent_c;
+
+        // move to up cell
+        return dfs(up.first, up.second, maze, visited, parent_r, parent_c, exit_r, exit_c);
+    }
+
+    // if no more cells can be visited and the exit wasn't found, stop and return false
     return false;
 }
 
