@@ -115,6 +115,7 @@ void printPath(pair<int,int> exitcell,
 
 bool dfs(int ent_r, int ent_c, const vector<vector<int>>& maze, vector<vector<bool>>& visited, vector<vector<int>>& parent_r, vector<vector<int>>& parent_c, int exit_r, int exit_c)
 {
+    
     // base case, if current cell is the exit, stop and return true
     if(ent_r == exit_r && ent_c == exit_c)
     {
@@ -142,13 +143,24 @@ bool dfs(int ent_r, int ent_c, const vector<vector<int>>& maze, vector<vector<bo
     }
 
     // if right cell can be visited
+    if(right.second < maze[0].size() && maze[right.first][right.second] != 1 && !visited[right.first][right.second])
+    {
+        // save current cell as parent of right cell
+        parent_r[right.first][right.second] = ent_r;
+        parent_c[right.first][right.second] = ent_c;
+
+        // move to right cell
+        return dfs(right.first, right.second, maze, visited, parent_r, parent_c, exit_r, exit_c);
+    }
+
+    // if down cell can be visited
     if(down.first < maze.size() && maze[down.first][down.second] != 1 && !visited[down.first][down.second])
     {
-        // save current cell as parent of up cell
+        // save current cell as parent of down cell
         parent_r[down.first][down.second] = ent_r;
         parent_c[down.first][down.second] = ent_c;
 
-        // move to up cell
+        // move to down cell
         return dfs(down.first, down.second, maze, visited, parent_r, parent_c, exit_r, exit_c);
     }
 
