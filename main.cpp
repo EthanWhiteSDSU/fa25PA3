@@ -131,7 +131,7 @@ bool dfs(int ent_r, int ent_c, const vector<vector<int>>& maze, vector<vector<bo
     pair<int, int> left(ent_r + dr[3], ent_c + dc[3]);
 
     // if up cell can be visited
-    if(up.first > -1 && maze[up.first][up.second] != '1' && !visited[up.first][up.second])
+    if(up.first > -1 && maze[up.first][up.second] != 1 && !visited[up.first][up.second])
     {
         // save current cell as parent of up cell
         parent_r[up.first][up.second] = ent_r;
@@ -139,6 +139,17 @@ bool dfs(int ent_r, int ent_c, const vector<vector<int>>& maze, vector<vector<bo
 
         // move to up cell
         return dfs(up.first, up.second, maze, visited, parent_r, parent_c, exit_r, exit_c);
+    }
+
+    // if right cell can be visited
+    if(down.first < maze.size() && maze[down.first][down.second] != 1 && !visited[down.first][down.second])
+    {
+        // save current cell as parent of up cell
+        parent_r[down.first][down.second] = ent_r;
+        parent_c[down.first][down.second] = ent_c;
+
+        // move to up cell
+        return dfs(down.first, down.second, maze, visited, parent_r, parent_c, exit_r, exit_c);
     }
 
     // if no more cells can be visited and the exit wasn't found, stop and return false
